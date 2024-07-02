@@ -9,8 +9,8 @@ class Fund {
     @Column()
     name: string;
 
-    @OneToMany(() => Transfer, (fundTransfer) => fundTransfer.destination)
-    fundTransfers: Transfer[]
+    // @OneToMany(() => Transfer, (transfer) => transfer.destination)
+    // transfers: Transfer[]
 
     @CreateDateColumn()
     createdAt: Date;

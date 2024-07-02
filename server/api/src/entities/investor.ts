@@ -12,8 +12,8 @@ class Investor {
     @CreateDateColumn()
     createdAt: Date;
 
-    @OneToMany(() => Transfer, (fundTransfer) => fundTransfer.source)
-    transfers: Transfer[]
+    // @OneToMany(() => Transfer, (transfer) => transfer.source)
+    // transfers: Transfer[]
 
     @UpdateDateColumn()
     updatedAt: Date;

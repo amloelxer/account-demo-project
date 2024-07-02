@@ -20,12 +20,18 @@ class Transfer {
     @Column({ type: "timestamptz", nullable: true })
     timeFinished: Date;
 
-    @ManyToOne(() => Investor, (investor) => investor.transfers)
-    source: Investor
+    // @ManyToOne(() => Investor, (investor) => investor.transfers)
+    // source: Investor
     
-    @ManyToOne(() => Fund, (fund) => fund.fundTransfers)
-    destination: Fund
+    // @ManyToOne(() => Fund, (fund) => fund.transfers)
+    // destination: Fund
 
+    @Column()
+    sourceId: string
+
+    @Column()
+    destinationId: string
+    
     @Column({type: "money"})
     transferAmount: number
 
