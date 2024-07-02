@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
-import Fund from "./entities/fund";
-import Investor from "./entities/investor";
+
+import User from './entities/user'
 import Transfer from "./entities/transfer";
 import Account from "./entities/account";
 
@@ -13,7 +13,7 @@ const AppDataSource = new DataSource({
   database: process.env.DB_NAME ?? "account-demo",
   synchronize: false,
   logging: true,
-  entities: [Fund, Investor, Transfer, Account],
+  entities: [User, Transfer, Account],
   migrations: ["./migrations/*.js"],
   subscribers: [],
 });

@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
-import Investor from "../../entities/investor";
 import Transfer from "../../entities/transfer";
+import User from "../../entities/user";
+import Account from "../../entities/account";
+import { In } from "typeorm";
 
-export const getAllTransactionsForInvestor = async (
+export const getAllTransfersForUser = async (
   request: Request,
   response: Response,
 ) => {
+
+  // do auth to pull the user id
   const investorId: string | null = request.body?.investorId;
 
   if (!investorId) {
@@ -15,19 +19,26 @@ export const getAllTransactionsForInvestor = async (
   }
 
   try {
-    const foundInvestor = await Investor.findOneBy({
+    const foundUser= await User.findOneBy({
       id: investorId,
     });
 
-    if (!foundInvestor) {
+    if (!foundUser) {
       return response.status(404).send({
         message: "Could not locate Fund or Investor",
       });
     }
 
+    const foundAccounts = await Account.find({
+      where: {
+        user: foundUser,
+      }
+    })
+
+    const arrayOfAccountIds = foundAccounts.map(account => account.id)
     const transfers = await Transfer.find({
       where: {
-        source: foundInvestor,
+        sourceAccountId: In(arrayOfAccountIds),
       },
     });
 

@@ -22,9 +22,9 @@ const startProcessingQueue = async () => {
         // set the start time on the queued transfer
         queuedTransfer.status = TransactionStatus.IN_PROGRESS
         queuedTransfer.timeStarted = DateTime.now().toUTC().toJSDate()
-        await queuedTransfer.save()
+        const transferInProgress = await queuedTransfer.save()
+        const transferAmount = transferInProgress.transferAmount;
 
-      
         // Do something with job
         return 'some value';
     }, {

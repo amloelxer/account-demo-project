@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import Fund from "../../entities/fund";
-import Investor from "../../entities/investor";
 import Transfer from "../../entities/transfer";
 import { transferQueue } from "../../utils/transferQueue";
+import Account from "../../entities/account";
 
 interface TransferInput {
-  fund: Fund;
-  investor: Investor;
+  sourceAccount: Account;
+  destinationAccount: Account;
   transferAmount: number;
 }
 
@@ -15,30 +14,30 @@ export const submitTransferTransaction = async (
   response: Response,
 ) => {
   // validate we have both users
-  const fundId: string | null = request?.body?.fundId;
-  const investorId: string | null = request.body?.investorId;
+  // const fundId: string | null = request?.body?.fundId;
+  // const investorId: string | null = request.body?.investorId;
+  const accountSourceID = request?.body?.accountSourceID
+  const accountDestinationID = request?.body?.accountSourceID
   const transferAmount: number | null = request.body?.transferAmount;
 
   // validate whomever is calling this is authenticated
-  if (!fundId || !investorId || !transferAmount) {
+  if (!accountSourceID || !accountDestinationID || !transferAmount) {
     return response.status(400).send({
       message: "Fund ID, partner ID, or transfer amount are invalid ",
     });
   }
 
   try {
-    const foundInvestor = await Investor.findOneBy({
-      id: investorId,
+    const sourceAccount = await Account.findOneBy({
+      id: accountSourceID,
     });
 
-    const foundFund = await Fund.findOneBy({
-      id: fundId,
+    const destinationAccount = await Account.findOneBy({
+      id: accountDestinationID,
     });
 
-    console.log(`the found fund id is ${foundFund?.id}`)
-    console.log(`the found investor id is ${foundInvestor?.id}`)
 
-    if (!foundInvestor || !foundFund) {
+    if (!sourceAccount || !destinationAccount) {
       return response.status(404).send({
         message: "Could not locate Fund or Investor",
       });
@@ -46,8 +45,8 @@ export const submitTransferTransaction = async (
 
     // submit item to queue
     const transferId = await submitTransferAndSubmitToQueue({
-      fund: foundFund,
-      investor: foundInvestor,
+      sourceAccount,
+      destinationAccount,
       transferAmount,
     });
     response.status(202).send({
@@ -64,8 +63,8 @@ const submitTransferAndSubmitToQueue = async (
   input: TransferInput,
 ): Promise<string> => {
   const transfer = new Transfer();
-  transfer.source = input.investor;
-  transfer.destination = input.fund;
+  // transfer. = input.sourceAccount;
+  // transfer.destination = input.fund;
   transfer.transferAmount = input.transferAmount;
   const savedTransfer = await transfer.save();
   // send to queue

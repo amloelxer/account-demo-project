@@ -7,8 +7,7 @@ import {
   ManyToOne,
   BaseEntity,
 } from "typeorm";
-import Fund from "./fund";
-import Investor from "./investor";
+import Account from "./account";
 
 enum TransactionStatus {
   NOT_STARTED = "NotStarted",
@@ -28,11 +27,11 @@ class Transfer extends BaseEntity {
   @Column({ type: "timestamptz", nullable: true })
   timeFinished: Date;
 
-  @ManyToOne(() => Investor, (investor) => investor.transfers)
-  source: Investor;
+  @Column()
+  sourceAccountId: string;
 
-  @ManyToOne(() => Fund, (fund) => fund.transfers)
-  destination: Fund;
+  @Column()
+  destinationAccountId: string;
 
   @Column({ type: "money" })
   transferAmount: number;
