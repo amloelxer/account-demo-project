@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import Fund from "../../entities/fund";
 import Investor from "../../entities/investor";
 import Transfer from "../../entities/transfer";
 
@@ -38,6 +37,38 @@ export const getAllTransactionsForInvestor = async (
 
     return response.status(200).send({
       transfers,
+    });
+  } catch (err) {
+    response.status(500).send({
+      message: "Internal Server error",
+    });
+  }
+};
+
+export const getTransaction = async (
+  request: Request,
+  response: Response,
+) => {
+  const transferId: string | null= request.params?.id
+
+  if (!transferId) {
+    return response.status(400).send({
+      message: "Investor ID is invalid",
+    });
+  }
+
+  try {
+    const foundTransfer = await Transfer.findOneBy({
+      id: transferId,
+    });
+
+    if (!foundTransfer) {
+      return response.status(404).send({
+        message: "Could not locate Fund or Investor",
+      });
+    }
+    return response.status(200).send({
+      foundTransfer,
     });
   } catch (err) {
     response.status(500).send({

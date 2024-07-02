@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Fund from "../../entities/fund";
 import Investor from "../../entities/investor";
 import Transfer from "../../entities/transfer";
+import { transferQueue } from "../../utils/queue";
 
 interface TransferInput {
   fund: Fund;
@@ -59,12 +60,12 @@ export const submitTransferTransaction = async (
 const submitTransferAndSubmitToQueue = async (
   input: TransferInput,
 ): Promise<string> => {
-  // do stuff here
   const transfer = new Transfer();
   transfer.source = input.investor;
   transfer.destination = input.fund;
   transfer.transferAmount = input.transferAmount;
   const savedTransfer = await transfer.save();
-  // send to queue
+// send to queue
+  await transferQueue.add(savedTransfer.id, 'stuff')
   return savedTransfer.id;
 };

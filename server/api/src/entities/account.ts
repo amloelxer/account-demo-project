@@ -1,11 +1,11 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    BaseEntity,
-  } from "typeorm";
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BaseEntity,
+} from "typeorm";
 
 @Entity()
 class Account extends BaseEntity {
@@ -16,17 +16,17 @@ class Account extends BaseEntity {
   name: string;
 
   @Column()
-  institutionAccountId: String
+  institutionAccountId: String;
 
   @Column()
-  routingNumber: String
+  routingNumber: String;
 
   @Column({ type: "money" })
   balance: number;
 
   @Column()
-  ownerId: String
- 
+  ownerId: String;
+
   @CreateDateColumn()
   createdAt: Date;
 
