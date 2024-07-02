@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Fund from "../../entities/fund";
 import Investor from "../../entities/investor";
 import Transfer from "../../entities/transfer";
-import { transferQueue } from "../../utils/queue";
+import { transferQueue } from "../../utils/transferQueue";
 
 interface TransferInput {
   fund: Fund;
