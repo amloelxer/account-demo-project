@@ -1,12 +1,20 @@
 import express from 'express';
+import 'dotenv/config'
+import AppDataSource from './data-source';
 
-const app = express();
-const port = 3001;
+const startApp = async () => {
+  const app = express();
+  const port = 3001;
+  try {
+    await AppDataSource.initialize()
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  } catch (err) {
+    console.error(`Could not initialize app with error`)
+  }
+}
 
-app.get('/', (req, res) => {
-  res.send('Hello, TypeScript Node Express!');
-});
+startApp()
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
