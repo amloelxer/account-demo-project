@@ -1,16 +1,19 @@
 import { DataSource } from "typeorm"
+import Fund from "./entities/fund"
+import Investor from "./entities/investor"
+import Transfer from "./entities/transfer"
 
 const AppDataSource = new DataSource({
     type: "postgres",
-    host: process.env.HOST_NAME ?? "localhost",
+    host: "localhost",
     port: 5432,
-    username: process.env.DB_USER ?? "postgres",
-    password: process.env.DB_PASS ?? "password",
-    database: process.env.DB_NAME ?? "account-demo",
+    username: "postgres",
+    password: "password",
+    database: "account-demo",
     synchronize: false,
     logging: true,
-    entities: ['dist/entities/*.js'],
-    migrations: ['dist/migrations/*.js'],
+    entities: [Fund, Investor, Transfer],
+    migrations: ['./migrations/*.js'],
     subscribers: [],
 })
 

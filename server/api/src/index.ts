@@ -11,7 +11,7 @@ const startApp = async () => {
       console.log(`Server is running on port ${port}`);
     });
   } catch (err) {
-    console.error(`Could not initialize app with error`)
+    console.error(`Could not initialize app with error`, err)
   }
 }
 
