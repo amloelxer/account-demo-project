@@ -6,11 +6,11 @@ import Account from "./entities/account";
 
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "password",
-  database: "account-demo",
+  host: process.env.DB_HOST ?? "localhost",
+  port: parseInt(process.env.DB_PORT  ?? "5432"),
+  username: process.env.DB_USER ?? "postgres",
+  password: process.env.PASS ?? "password",
+  database: process.env.DB_NAME ?? "account-demo",
   synchronize: false,
   logging: true,
   entities: [Fund, Investor, Transfer, Account],

@@ -45,7 +45,7 @@ export const getAllTransactionsForInvestor = async (
   }
 };
 
-export const getTransaction = async (
+export const getTransferForId = async (
   request: Request,
   response: Response,
 ) => {
