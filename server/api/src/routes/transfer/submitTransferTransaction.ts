@@ -35,6 +35,9 @@ export const submitTransferTransaction = async (
       id: fundId,
     });
 
+    console.log(`the found fund id is ${foundFund?.id}`)
+    console.log(`the found investor id is ${foundInvestor?.id}`)
+
     if (!foundInvestor || !foundFund) {
       return response.status(404).send({
         message: "Could not locate Fund or Investor",
@@ -66,6 +69,6 @@ const submitTransferAndSubmitToQueue = async (
   transfer.transferAmount = input.transferAmount;
   const savedTransfer = await transfer.save();
   // send to queue
-  await transferQueue.add(savedTransfer.id, "stuff");
+  await transferQueue.add(savedTransfer.id, "stuff", { removeOnComplete: true, jobId: savedTransfer.id});
   return savedTransfer.id;
 };

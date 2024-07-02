@@ -11,9 +11,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bullmq": "^5.8.3"
+    "bullmq": "^5.8.3",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
+    "@types/node": "^20.14.9",
     "prettier": "3.3.2"
   }
 }
