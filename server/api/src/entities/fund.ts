@@ -1,22 +1,30 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm"
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  BaseEntity,
+} from "typeorm";
 import Transfer from "./transfer";
 
 @Entity()
-class Fund {
-    @PrimaryGeneratedColumn("uuid")
-    id: string
+class Fund extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @OneToMany(() => Transfer, (transfer) => transfer.destination)
-    transfers: Transfer[]
+  @OneToMany(() => Transfer, (transfer) => transfer.destination)
+  transfers: Transfer[];
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
 
 export default Fund;
