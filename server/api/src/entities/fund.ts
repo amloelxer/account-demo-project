@@ -1,7 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm"
 import Transfer from "./transfer";
 
-Entity()
+@Entity()
 class Fund {
     @PrimaryGeneratedColumn("uuid")
     id: string
@@ -9,8 +9,8 @@ class Fund {
     @Column()
     name: string;
 
-    // @OneToMany(() => Transfer, (transfer) => transfer.destination)
-    // transfers: Transfer[]
+    @OneToMany(() => Transfer, (transfer) => transfer.destination)
+    transfers: Transfer[]
 
     @CreateDateColumn()
     createdAt: Date;
