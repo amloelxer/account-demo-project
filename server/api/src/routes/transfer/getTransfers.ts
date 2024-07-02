@@ -49,7 +49,7 @@ export const getTransferForId = async (
   request: Request,
   response: Response,
 ) => {
-  const transferId: string | null= request.params?.id
+  const transferId: string | null = request.params?.id;
 
   if (!transferId) {
     return response.status(400).send({

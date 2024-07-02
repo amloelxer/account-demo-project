@@ -65,7 +65,7 @@ const submitTransferAndSubmitToQueue = async (
   transfer.destination = input.fund;
   transfer.transferAmount = input.transferAmount;
   const savedTransfer = await transfer.save();
-// send to queue
-  await transferQueue.add(savedTransfer.id, 'stuff')
+  // send to queue
+  await transferQueue.add(savedTransfer.id, "stuff");
   return savedTransfer.id;
 };
