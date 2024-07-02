@@ -12,7 +12,9 @@
   "description": "",
   "dependencies": {
     "bullmq": "^5.8.3",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",

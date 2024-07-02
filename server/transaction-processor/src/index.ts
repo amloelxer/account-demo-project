@@ -1,10 +1,11 @@
 import { Worker, Job } from 'bullmq';
-
+import AppDataSource from './data-source';
 const processQueueItem = async () => {
 
 }
 
 const startProcessingQueue = async () => {
+    await AppDataSource.initialize();
     console.log(`Starting to listen for items on the queue`)
     const worker = new Worker("transfer-queue", async (job: Job) => {
         // Optionally report some progress
