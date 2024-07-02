@@ -10,7 +10,7 @@ import {
 import Fund from "./fund";
 import Investor from "./investor";
 
-enum TransactionStatus {
+export enum TransactionStatus {
   NOT_STARTED = "NotStarted",
   COMPLETED = "Completed",
   IN_PROGRESS = "InProgress",
