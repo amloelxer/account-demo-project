@@ -8,7 +8,7 @@ import {
   BaseEntity,
 } from "typeorm";
 
-enum TransactionStatus {
+export enum TransactionStatus {
   NOT_STARTED = "NotStarted",
   COMPLETED = "Completed",
   IN_PROGRESS = "InProgress",
