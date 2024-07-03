@@ -27,7 +27,7 @@ cd client/dashboard/
 npm install
 ```
 
-Once the node modules are installed you can run the docker file (located at the server directory) which will download and run a redis client and a postgres instance
+Once the node modules are installed you can run the docker file (located at the server directory) which will download and run a redis instance and a postgres instance
 
 ```
 docker compose up -d docker-compose.yml
@@ -38,7 +38,7 @@ After the instances have been run, you'll need to sync the entities with the dat
 ```
 cd api/ // transfer into the API directory
 npm run build // so that we have javascript output
-npx typeorm schema:sync -d dist/data-source.js  
+npx typeorm schema:sync -d dist/data-source.js // create the necessary tables
 ```
 
 ## Testing
