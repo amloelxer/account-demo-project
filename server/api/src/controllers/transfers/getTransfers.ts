@@ -11,7 +11,7 @@ export const getAllTransfersForUser = async (
 ) => {
   // TODO: Auth middleware can attach the userID on the session object
   // const userId: string | null = request?.session.userId
-  const userId: string | null = ""
+  const userId: string | null = "";
   const responseObject = {
     response,
     request,

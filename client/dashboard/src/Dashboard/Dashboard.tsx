@@ -1,8 +1,5 @@
 import "./Dashboard.css";
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,16 +9,15 @@ const submitTransfer = async () => {
 
 const pollForTransfersAndUpdateIfNeeded = () => {
   // poll for transfers
-}
+};
 
 const Dashboard = () => {
   const [transfers, setTranfers] = useState([{ name: "fake transfer" }]);
 
   useEffect(() => {
-    pollForTransfersAndUpdateIfNeeded()
+    pollForTransfersAndUpdateIfNeeded();
     // query for the list of transfers here
-  }, [])
-
+  }, []);
 
   return (
     <div className="container">

@@ -13,7 +13,6 @@ export const submitTransferTransaction = async (
   request: Request,
   response: Response,
 ) => {
-
   const accountSourceID = request?.body?.accountSourceId;
   const accountDestinationID = request?.body?.accountDestinationId;
   const transferAmount: number | null = request.body?.transferAmount;
