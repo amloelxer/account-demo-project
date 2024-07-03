@@ -17,10 +17,10 @@ Docker ->  v26.1.1
 Once you have the necessary versions installed. You'll need to install the node modules for all the projects
 
 ```
-cd api/
+cd server/api/
 npm install 
 
-cd transaction-processor/
+cd server/transaction-processor/
 npm install 
 
 cd client/dashboard/ 
@@ -30,13 +30,14 @@ npm install
 Once the node modules are installed you can run the docker file (located at the server directory) which will download and run a redis instance and a postgres instance
 
 ```
+cd server/
 docker compose up -d docker-compose.yml
 ```
 
 After the instances have been run, you'll need to sync the entities with the database. Generally running and creating migrations is best practice, but this is the fastest way to get up and running.
 
 ```
-cd api/ // transfer into the API directory
+cd server/api/ // transfer into the API directory
 npm run build // so that we have javascript output
 npx typeorm schema:sync -d dist/data-source.js // create the necessary tables
 ```
@@ -46,10 +47,10 @@ npx typeorm schema:sync -d dist/data-source.js // create the necessary tables
 Once you have the necessary setup you can start both the API and the Transaction Processor in their respective directories 
 
 ```
-cd api/
+cd server/api/
 npm run start
 
-cd transaction-processor/
+cd server/transaction-processor/
 npm run start
 ```
 
