@@ -22,12 +22,13 @@ class Account extends BaseEntity {
   @Column()
   name: string;
 
-  // The id used to reference other accounts
+  // The id used to reference other accounts outsite of our system
+  // needed for interacting with third party API's
   @Column()
-  externalAccountId: String;
+  externalAccountId: string;
 
   @Column()
-  routingNumber: String;
+  routingNumber: string;
 
   @ManyToOne(() => User, (user) => user.accounts)
   user: User;

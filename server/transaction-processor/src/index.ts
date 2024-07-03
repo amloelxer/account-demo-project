@@ -2,14 +2,9 @@ import { Worker, Job } from 'bullmq';
 import AppDataSource from './data-source';
 import Transfer, { TransactionStatus } from './entities/transfer';
 import { DateTime } from "luxon"
-const processQueueItem = async () => {
+import Account from './entities/account';
 
-}
-const startProcessingQueue = async () => {
-    await AppDataSource.initialize();
-    console.log(`Starting to listen for items on the queue`)
-    const worker = new Worker("transfer-queue", async (job: Job) => {
-        // Optionally report some progress
+const processQueueItem = async (job: Job) => {
         const queuedTransfer = await Transfer.findOneBy({
             id: job.id
         })
@@ -24,9 +19,34 @@ const startProcessingQueue = async () => {
         queuedTransfer.timeStarted = DateTime.now().toUTC().toJSDate()
         const transferInProgress = await queuedTransfer.save()
         const transferAmount = transferInProgress.transferAmount;
+        const sourceAccount = await Account.findOneByOrFail({id: transferInProgress.sourceAccountId})
+        const destinationAccount = await Account.findOneByOrFail({id: transferInProgress.destinationAccountId})
+        await withdrawFromSourceAccount(transferAmount, sourceAccount.externalAccountId)
+        await transferToDestinationAccount(transferAmount, destinationAccount.externalAccountId)
+        transferInProgress.status = TransactionStatus.COMPLETED
+        transferInProgress.timeFinished = DateTime.now().toUTC().toJSDate()
+        await transferInProgress.save()
+        console.log(`all done`)
+}
 
-        // Do something with job
-        return 'some value';
+const withdrawFromSourceAccount = async (transferAmount: number, sourceAccountId: string): Promise<boolean> => {
+    return true
+}
+
+const transferToDestinationAccount = async (transferAmount: number, destinationAccountId: string): Promise<boolean> => {
+    return true
+}
+
+const startProcessingQueue = async () => {
+    await AppDataSource.initialize();
+    console.log(`Starting to listen for items on the queue`)
+    const worker = new Worker("transfer-queue", async (job: Job) => {
+        // Optionally report some progress
+        try {
+            processQueueItem(job)
+        } catch (err) {
+            // rut roh got a lot of cleanup to do
+        }
     }, {
         connection: {
             host: process.env.REDIS_HOST ?? "127.0.0.1",

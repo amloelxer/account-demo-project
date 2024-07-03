@@ -7,7 +7,6 @@ import {
   ManyToOne,
   BaseEntity,
 } from "typeorm";
-import Account from "./account";
 
 enum TransactionStatus {
   NOT_STARTED = "NotStarted",
