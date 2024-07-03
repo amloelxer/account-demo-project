@@ -31,10 +31,9 @@ export const getAllTransfersForUser = async (
         id: investorId,
       },
       relations: {
-        financialEntity: true
-      }
-    },
-  );
+        financialEntity: true,
+      },
+    });
 
     if (!foundUser) {
       return sendApiResponse({

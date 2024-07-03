@@ -25,7 +25,6 @@ class User extends BaseEntity {
   @Column()
   name: string;
 
-  
   @ManyToOne(() => FinancialEntity, (financialEntity) => financialEntity.users)
   financialEntity: FinancialEntity;
 

@@ -28,7 +28,10 @@ class Account extends BaseEntity {
   @Column()
   externalAccountId: string;
 
-  @ManyToOne(() => FinancialEntity, (financialEntity) => financialEntity.accounts)
+  @ManyToOne(
+    () => FinancialEntity,
+    (financialEntity) => financialEntity.accounts,
+  )
   financialEntity: FinancialEntity;
 
   // @Column({ type: "money" })
@@ -39,7 +42,6 @@ class Account extends BaseEntity {
     enum: AccountType,
     default: AccountType.INVESTOR_ACCOUNT,
   })
-
   @Column()
   ownerId: String;
 

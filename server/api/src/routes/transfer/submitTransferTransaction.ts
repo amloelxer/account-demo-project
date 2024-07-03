@@ -79,13 +79,17 @@ const submitTransferAndSubmitToQueue = async (
   // transfer. = input.sourceAccount;
   // transfer.destination = input.fund;
   transfer.transferAmount = input.transferAmount;
-  transfer.destinationAccountId = input.destinationAccount.id
-  transfer.sourceAccountId = input.sourceAccount.id
+  transfer.destinationAccountId = input.destinationAccount.id;
+  transfer.sourceAccountId = input.sourceAccount.id;
   const savedTransfer = await transfer.save();
   // send to queue
-  await transferQueue.add(savedTransfer.id, {}, {
-    removeOnComplete: true,
-    jobId: savedTransfer.id,
-  });
+  await transferQueue.add(
+    savedTransfer.id,
+    {},
+    {
+      removeOnComplete: true,
+      jobId: savedTransfer.id,
+    },
+  );
   return savedTransfer.id;
 };
