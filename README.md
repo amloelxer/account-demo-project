@@ -20,7 +20,7 @@ Once you have the necessary versions installed. You'll need to install the node 
 cd api/
 npm install 
 
-cd transaction-processor
+cd transaction-processor/
 npm install 
 
 cd client/dashboard/ 
@@ -41,13 +41,36 @@ npm run build // so that we have javascript output
 npx typeorm schema:sync -d dist/data-source.js  
 ```
 
-From there you can run any of three projects by transferring into their directory and running
+## Testing
+
+Once you have the necessary setup you can start both the API and the Transaction Processor in their respective directories 
 
 ```
+cd api/
+npm run start
+
+cd transaction-processor/
 npm run start
 ```
 
-Let me know if you have any questions!
+From there you can can create some basic DB entities and test by hitting the endpoint 
+```
+POST localhost:3001/submitTransfer
+
+```
+With a body like 
+```
+{
+    "accountSourceId": "SOME_UUID",
+    "accountDestinationId": "SOME_UUID",
+    "transferAmount": 52.28
+}
+```
+
+Note that you'll need to create some basic DB entities (at least two financial entities, two accounts, and one user)
+
+But from there you'll be able to watch the job processing transactions. Let me know if you have any questions!
+
 
 
 

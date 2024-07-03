@@ -57,7 +57,7 @@ export const processQueueItem = async (job: Job) => {
  * @param sourceAccount
  * @param destinationAccount
  *
- * Note that this must be atomic operation when it comes to transferring money.
+ * Note that this must be an atomic operation when it comes to transferring money.
  * We must able to complete, or need to revert any changes we made to the various accounts
  */
 const transferFunds = async (

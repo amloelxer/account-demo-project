@@ -28,6 +28,7 @@ class Account extends BaseEntity {
   )
   financialEntity: FinancialEntity;
 
+  // No need to keep track of this right now but might in the future
   // @Column({ type: "money" })
   // balance: number;
 

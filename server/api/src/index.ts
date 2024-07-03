@@ -6,6 +6,7 @@ import { transferRouter } from "./routes/transfer/transfer";
 
 const startApp = async () => {
   const app = express();
+  // Allows the API to be hit from any URL. Necessary if fetching from another origin
   app.use(cors())
   app.use(express.json());
   app.use(transferRouter);

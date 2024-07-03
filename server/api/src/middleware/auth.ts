@@ -6,7 +6,7 @@ export const authMiddleware = async (
   response: Response,
   next: NextFunction,
 ) => {
-  const canContinue = await isValidRequest(request);
+  const canContinue = await mockiIsValidRequest(request);
   if (canContinue) {
     next();
     return;
@@ -19,7 +19,7 @@ export const authMiddleware = async (
   }
 };
 
-const isValidRequest = (request: Request): Promise<true> => {
+const mockiIsValidRequest = (request: Request): Promise<true> => {
   // parse some cookie or header from the request
   // validate it either ourselves or some from third party (Cognito, Auth0 etc etc)
   return new Promise((resolve, reject) => {

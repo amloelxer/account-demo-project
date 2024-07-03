@@ -47,7 +47,7 @@ export const mockTransferToDestinationAccount = async (
  * @param destinationAccount
  *
  * This is a mock function but you can imagine if anything goes wrong here
- * we are in a weird non atomic state and we should page the on call as this is incredibly problematic
+ * we are in a weird non atomic state and we should page the on call person and error as this is incredibly problematic
  */
 export const mockRestorePreviousFundState = async (
   sourceAccount: Account,

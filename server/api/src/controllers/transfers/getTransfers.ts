@@ -9,15 +9,15 @@ export const getAllTransfersForUser = async (
   request: Request,
   response: Response,
 ) => {
-  // do auth to pull the user id
-  const investorId: string | null = request.body?.investorId;
-
+  // TODO: Auth middleware can attach the userID on the session object
+  // const userId: string | null = request?.session.userId
+  const userId: string | null = ""
   const responseObject = {
     response,
     request,
   };
 
-  if (!investorId) {
+  if (!userId) {
     return sendApiResponse({
       ...responseObject,
       responseCode: API_RESPONSE_CODE.BAD_REQUEST,
@@ -28,7 +28,7 @@ export const getAllTransfersForUser = async (
   try {
     const foundUser = await User.findOne({
       where: {
-        id: investorId,
+        id: userId,
       },
       relations: {
         financialEntity: true,
@@ -39,7 +39,7 @@ export const getAllTransfersForUser = async (
       return sendApiResponse({
         ...responseObject,
         responseCode: API_RESPONSE_CODE.NOT_FOUND,
-        message: "Could not locate Fund or Investor",
+        message: "Could not locate User",
       });
     }
 
