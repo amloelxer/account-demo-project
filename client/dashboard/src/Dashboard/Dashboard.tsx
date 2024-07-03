@@ -1,5 +1,7 @@
 import './Dashboard.css';
-import { useEffect, useState } from 'react';
+import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 const submitTransfer = async () => {
     const payload = {
@@ -7,27 +9,20 @@ const submitTransfer = async () => {
         "accountDestinationId": "14ee89de-beeb-442f-ad4b-fa780d906e08",
         "transferAmount": 52.28
     }
-}
 
+    axios.defaults.baseURL = 'http://127.0.0.1:3001'
+    try {
+        await axios.post('/submitTransfer', payload)
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 const Dashboard = () => {
     const  [transfers, setTranfers]  = useState([{name: "fake transfer"}])
-    useEffect(() => {
-
-    }, [])
-
-    const listElements = transfers.map(transfer => {
-        return (
-            <ul>{transfer.name}</ul>
-        )
-    })
 
     return (
         <div className="container">
-             <p>{'hello world'}</p>
-             <ul>
-             {listElements}
-            </ul>
             <button style={{height: 50, width: 100}} onClick={() => {
                 submitTransfer()
             }}>

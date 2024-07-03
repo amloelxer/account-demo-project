@@ -1,10 +1,12 @@
 import express from "express";
 import "dotenv/config";
 import AppDataSource from "./data-source";
+import cors from "cors"
 import { transferRouter } from "./routes/transfer/transfer";
 
 const startApp = async () => {
   const app = express();
+  app.use(cors())
   app.use(express.json());
   app.use(transferRouter);
   const port = 3001;
