@@ -5,7 +5,7 @@
 This is a take home project. The report about my project can be found [here](https://northern-fascinator-7d7.notion.site/Bridge-Take-Home-479a2e3b1c7741a199147a25d90e8af8).
 
 ## Dependencies
-This project was created with Node.js, typescript, NPM, and Docker. I'm using the following versions 
+This project was created with Node.js, Typescript, NPM, and Docker. I'm using the following versions 
 
 ```
 Node -> v22.2.0
@@ -14,13 +14,13 @@ Typescript -> v5.4.5
 Docker ->  v26.1.1
 ```
 
-Once you have the necessary versions installed. You'll need to install the node modules for all the projects
+Once you have the necessary versions installed. You'll need to clone the repo and install the node modules for all the projects
 
 ```
-cd api/
+cd server/api/
 npm install 
 
-cd transaction-processor/
+cd server/transaction-processor/
 npm install 
 
 cd client/dashboard/ 
@@ -30,13 +30,14 @@ npm install
 Once the node modules are installed you can run the docker file (located at the server directory) which will download and run a redis instance and a postgres instance
 
 ```
-docker compose up -d docker-compose.yml
+cd server/
+docker compose up -d
 ```
 
 After the instances have been run, you'll need to sync the entities with the database. Generally running and creating migrations is best practice, but this is the fastest way to get up and running.
 
 ```
-cd api/ // transfer into the API directory
+cd server/api/ // transfer into the API directory
 npm run build // so that we have javascript output
 npx typeorm schema:sync -d dist/data-source.js // create the necessary tables
 ```
@@ -46,10 +47,10 @@ npx typeorm schema:sync -d dist/data-source.js // create the necessary tables
 Once you have the necessary setup you can start both the API and the Transaction Processor in their respective directories 
 
 ```
-cd api/
+cd server/api/
 npm run start
 
-cd transaction-processor/
+cd server/transaction-processor/
 npm run start
 ```
 
