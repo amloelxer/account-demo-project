@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Transfer from "../../entities/transfer";
 import { transferQueue } from "../../utils/transferQueue";
 import Account from "../../entities/account";
-
+import { API_RESPONSE_CODE, sendApiResponse } from "../../utils/apiResponse";
 interface TransferInput {
   sourceAccount: Account;
   destinationAccount: Account;
@@ -20,11 +20,18 @@ export const submitTransferTransaction = async (
   const accountDestinationID = request?.body?.accountSourceID;
   const transferAmount: number | null = request.body?.transferAmount;
 
+  const responseObject = {
+    response,
+    request, 
+  }
+
   // validate whomever is calling this is authenticated
   if (!accountSourceID || !accountDestinationID || !transferAmount) {
-    return response.status(400).send({
-      message: "Fund ID, partner ID, or transfer amount are invalid ",
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.BAD_REQUEST,
+      message: "Fund ID, partner ID, or transfer amount are invalid "
+    })
   }
 
   try {
@@ -37,9 +44,11 @@ export const submitTransferTransaction = async (
     });
 
     if (!sourceAccount || !destinationAccount) {
-      return response.status(404).send({
-        message: "Could not locate Fund or Investor",
-      });
+      return sendApiResponse({
+        ...responseObject, 
+        responseCode: API_RESPONSE_CODE.NOT_FOUND,
+        message: "Could not locate Fund or Investor"
+      })
     }
 
     // submit item to queue
@@ -48,13 +57,19 @@ export const submitTransferTransaction = async (
       destinationAccount,
       transferAmount,
     });
-    response.status(202).send({
-      transferId,
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.ACCEPTED,
+      payload: {
+        transferId
+      }
+    })
   } catch (err) {
-    response.status(500).send({
-      message: "Internal Server error",
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR,
+      error: err,
+    })
   }
 };
 

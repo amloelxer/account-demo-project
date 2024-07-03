@@ -3,6 +3,7 @@ import Transfer from "../../entities/transfer";
 import User from "../../entities/user";
 import Account from "../../entities/account";
 import { In } from "typeorm";
+import { API_RESPONSE_CODE, sendApiResponse } from "../../utils/apiResponse";
 
 export const getAllTransfersForUser = async (
   request: Request,
@@ -11,10 +12,17 @@ export const getAllTransfersForUser = async (
   // do auth to pull the user id
   const investorId: string | null = request.body?.investorId;
 
+  const responseObject = {
+    response,
+    request, 
+  }
+
   if (!investorId) {
-    return response.status(400).send({
-      message: "Investor ID is invalid",
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.BAD_REQUEST,
+      message: "Investor ID is invalid"
+    })
   }
 
   try {
@@ -23,9 +31,11 @@ export const getAllTransfersForUser = async (
     });
 
     if (!foundUser) {
-      return response.status(404).send({
-        message: "Could not locate Fund or Investor",
-      });
+      return sendApiResponse({
+        ...responseObject, 
+        responseCode: API_RESPONSE_CODE.NOT_FOUND,
+        message: "Could not locate Fund or Investor"
+      })
     }
 
     const foundAccounts = await Account.find({
@@ -42,16 +52,22 @@ export const getAllTransfersForUser = async (
     });
 
     if (transfers.length < 1) {
-      return response.status(404).send();
+      return sendApiResponse({
+        ...responseObject, 
+        responseCode: API_RESPONSE_CODE.NOT_FOUND
+      })
     }
 
-    return response.status(200).send({
-      transfers,
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.OK,
+      payload: transfers
+    })
   } catch (err) {
-    response.status(500).send({
-      message: "Internal Server error",
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR
+    })
   }
 };
 
@@ -61,10 +77,9 @@ export const getTransferForId = async (
 ) => {
   const transferId: string | null = request.params?.id;
 
-  if (!transferId) {
-    return response.status(400).send({
-      message: "Investor ID is invalid",
-    });
+  const responseObject = {
+    response,
+    request, 
   }
 
   try {
@@ -73,16 +88,23 @@ export const getTransferForId = async (
     });
 
     if (!foundTransfer) {
-      return response.status(404).send({
-        message: "Could not locate Fund or Investor",
-      });
+      return sendApiResponse({
+        ...responseObject, 
+        responseCode: API_RESPONSE_CODE.NOT_FOUND,
+        message: `Could not locate transfer with transferID of ${transferId}`
+      })
     }
-    return response.status(200).send({
-      foundTransfer,
-    });
+
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.OK,
+      payload: foundTransfer
+    })
   } catch (err) {
-    response.status(500).send({
-      message: "Internal Server error",
-    });
+    return sendApiResponse({
+      ...responseObject, 
+      responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR,
+      error: err
+    })
   }
 };
