@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   BaseEntity,
+  Index,
 } from "typeorm";
 
 export enum TransactionStatus {
@@ -26,15 +27,18 @@ class Transfer extends BaseEntity {
   @Column({ type: "timestamptz", nullable: true })
   timeFinished: Date;
 
+  @Index()
   @Column()
   sourceAccountId: string;
 
+  @Index()
   @Column()
   destinationAccountId: string;
 
   @Column({ type: "money" })
   transferAmount: number;
 
+  @Index()
   @Column({
     type: "enum",
     enum: TransactionStatus,

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Transfer from "../../entities/transfer";
 import { transferQueue } from "../../utils/transferQueue";
 import Account from "../../entities/account";
-
+import { API_RESPONSE_CODE, sendApiResponse } from "../../utils/apiResponse";
 interface TransferInput {
   sourceAccount: Account;
   destinationAccount: Account;
@@ -16,13 +16,19 @@ export const submitTransferTransaction = async (
   // validate we have both users
   // const fundId: string | null = request?.body?.fundId;
   // const investorId: string | null = request.body?.investorId;
-  const accountSourceID = request?.body?.accountSourceID;
-  const accountDestinationID = request?.body?.accountSourceID;
+  const accountSourceID = request?.body?.accountSourceId;
+  const accountDestinationID = request?.body?.accountDestinationId;
   const transferAmount: number | null = request.body?.transferAmount;
 
-  // validate whomever is calling this is authenticated
+  const responseObject = {
+    response,
+    request,
+  };
+
   if (!accountSourceID || !accountDestinationID || !transferAmount) {
-    return response.status(400).send({
+    return sendApiResponse({
+      ...responseObject,
+      responseCode: API_RESPONSE_CODE.BAD_REQUEST,
       message: "Fund ID, partner ID, or transfer amount are invalid ",
     });
   }
@@ -37,8 +43,10 @@ export const submitTransferTransaction = async (
     });
 
     if (!sourceAccount || !destinationAccount) {
-      return response.status(404).send({
-        message: "Could not locate Fund or Investor",
+      return sendApiResponse({
+        ...responseObject,
+        responseCode: API_RESPONSE_CODE.NOT_FOUND,
+        message: "Could not locate source account or destination account",
       });
     }
 
@@ -48,12 +56,18 @@ export const submitTransferTransaction = async (
       destinationAccount,
       transferAmount,
     });
-    response.status(202).send({
-      transferId,
+    return sendApiResponse({
+      ...responseObject,
+      responseCode: API_RESPONSE_CODE.ACCEPTED,
+      payload: {
+        transferId,
+      },
     });
   } catch (err) {
-    response.status(500).send({
-      message: "Internal Server error",
+    return sendApiResponse({
+      ...responseObject,
+      responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR,
+      error: err,
     });
   }
 };
@@ -65,11 +79,17 @@ const submitTransferAndSubmitToQueue = async (
   // transfer. = input.sourceAccount;
   // transfer.destination = input.fund;
   transfer.transferAmount = input.transferAmount;
+  transfer.destinationAccountId = input.destinationAccount.id;
+  transfer.sourceAccountId = input.sourceAccount.id;
   const savedTransfer = await transfer.save();
   // send to queue
-  await transferQueue.add(savedTransfer.id, "stuff", {
-    removeOnComplete: true,
-    jobId: savedTransfer.id,
-  });
+  await transferQueue.add(
+    savedTransfer.id,
+    {},
+    {
+      removeOnComplete: true,
+      jobId: savedTransfer.id,
+    },
+  );
   return savedTransfer.id;
 };

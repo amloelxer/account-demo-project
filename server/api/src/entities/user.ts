@@ -6,14 +6,10 @@ import {
   UpdateDateColumn,
   OneToMany,
   BaseEntity,
+  ManyToOne,
 } from "typeorm";
 
-import Account from "./account";
-
-enum UserType {
-  INVESTOR = "Investor",
-  FUND_MANAGER = "FundManager",
-}
+import FinancialEntity from "./financialEntity";
 
 @Entity()
 class User extends BaseEntity {
@@ -23,15 +19,8 @@ class User extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToMany(() => Account, (account) => account.user)
-  accounts: Account[];
-
-  @Column({
-    type: "enum",
-    enum: UserType,
-    default: UserType.INVESTOR,
-  })
-  type: UserType;
+  @ManyToOne(() => FinancialEntity, (financialEntity) => financialEntity.users)
+  financialEntity: FinancialEntity;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   OneToMany,
   BaseEntity,
+  ManyToOne,
 } from "typeorm";
 
 import Account from "./account";
+import FinancialEntity from "./financialEntity";
 
 enum UserType {
   INVESTOR = "Investor",
@@ -23,8 +25,9 @@ class User extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToMany(() => Account, (account) => account.user)
-  accounts: Account[];
+  
+  @ManyToOne(() => FinancialEntity, (financialEntity) => financialEntity.users)
+  financialEntity: FinancialEntity;
 
   @Column({
     type: "enum",

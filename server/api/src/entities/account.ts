@@ -7,12 +7,7 @@ import {
   BaseEntity,
   ManyToOne,
 } from "typeorm";
-import User from "./user";
-
-enum AccountType {
-  INVESTOR_ACCOUNT = "InvestorAccount",
-  FUND_ACCOUNT = "FundAccount",
-}
+import FinancialEntity from "./financialEntity";
 
 @Entity()
 class Account extends BaseEntity {
@@ -27,22 +22,14 @@ class Account extends BaseEntity {
   @Column()
   externalAccountId: string;
 
-  @Column()
-  routingNumber: string;
+  @ManyToOne(
+    () => FinancialEntity,
+    (financialEntity) => financialEntity.accounts,
+  )
+  financialEntity: FinancialEntity;
 
-  @ManyToOne(() => User, (user) => user.accounts)
-  user: User;
-
-  @Column({ type: "money" })
-  balance: number;
-
-  @Column({
-    type: "enum",
-    enum: AccountType,
-    default: AccountType.INVESTOR_ACCOUNT,
-  })
-  @Column()
-  ownerId: String;
+  // @Column({ type: "money" })
+  // balance: number;
 
   @CreateDateColumn()
   createdAt: Date;

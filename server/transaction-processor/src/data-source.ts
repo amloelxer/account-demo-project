@@ -2,7 +2,8 @@ import { DataSource } from "typeorm";
 
 import User from "./entities/user";
 import Transfer from "./entities/transfer";
-import Account from "./entities/account";
+import Account from "./entities/account"
+import FinancialEntity from "./entities/financialEntity";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -13,7 +14,7 @@ const AppDataSource = new DataSource({
   database: process.env.DB_NAME ?? "account-demo",
   synchronize: false,
   logging: true,
-  entities: [User, Transfer, Account],
+  entities: [User, Transfer, Account, FinancialEntity],
   migrations: ["./migrations/*.js"],
   subscribers: [],
 });
