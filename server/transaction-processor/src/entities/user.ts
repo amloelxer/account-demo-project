@@ -1,18 +1,18 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    OneToMany,
-    BaseEntity,
-  } from "typeorm";
-  
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  BaseEntity,
+} from "typeorm";
+
 import Account from "./account";
 
 enum UserType {
-    INVESTOR = "Investor",
-    FUND_MANAGER = "FundManager",
+  INVESTOR = "Investor",
+  FUND_MANAGER = "FundManager",
 }
 
 @Entity()

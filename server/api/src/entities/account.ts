@@ -5,9 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-  ManyToOne
+  ManyToOne,
 } from "typeorm";
-import User from "./user"
+import User from "./user";
 
 enum AccountType {
   INVESTOR_ACCOUNT = "InvestorAccount",
@@ -41,7 +41,6 @@ class Account extends BaseEntity {
     enum: AccountType,
     default: AccountType.INVESTOR_ACCOUNT,
   })
-
   @Column()
   ownerId: String;
 

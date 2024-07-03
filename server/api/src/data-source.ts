@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 
-import User from './entities/user'
+import User from "./entities/user";
 import Transfer from "./entities/transfer";
 import Account from "./entities/account";
 

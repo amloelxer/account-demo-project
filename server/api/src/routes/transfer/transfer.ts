@@ -1,9 +1,6 @@
 import { Router, Request, Response } from "express";
 import { submitTransferTransaction } from "./submitTransferTransaction";
-import {
-  getAllTransfersForUser,
-  getTransferForId,
-} from "./getTransfers";
+import { getAllTransfersForUser, getTransferForId } from "./getTransfers";
 
 export const transferRouter = Router();
 

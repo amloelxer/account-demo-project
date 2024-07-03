@@ -16,8 +16,8 @@ export const submitTransferTransaction = async (
   // validate we have both users
   // const fundId: string | null = request?.body?.fundId;
   // const investorId: string | null = request.body?.investorId;
-  const accountSourceID = request?.body?.accountSourceID
-  const accountDestinationID = request?.body?.accountSourceID
+  const accountSourceID = request?.body?.accountSourceID;
+  const accountDestinationID = request?.body?.accountSourceID;
   const transferAmount: number | null = request.body?.transferAmount;
 
   // validate whomever is calling this is authenticated
@@ -35,7 +35,6 @@ export const submitTransferTransaction = async (
     const destinationAccount = await Account.findOneBy({
       id: accountDestinationID,
     });
-
 
     if (!sourceAccount || !destinationAccount) {
       return response.status(404).send({
@@ -68,6 +67,9 @@ const submitTransferAndSubmitToQueue = async (
   transfer.transferAmount = input.transferAmount;
   const savedTransfer = await transfer.save();
   // send to queue
-  await transferQueue.add(savedTransfer.id, "stuff", { removeOnComplete: true, jobId: savedTransfer.id});
+  await transferQueue.add(savedTransfer.id, "stuff", {
+    removeOnComplete: true,
+    jobId: savedTransfer.id,
+  });
   return savedTransfer.id;
 };

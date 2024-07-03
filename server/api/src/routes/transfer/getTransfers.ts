@@ -8,7 +8,6 @@ export const getAllTransfersForUser = async (
   request: Request,
   response: Response,
 ) => {
-
   // do auth to pull the user id
   const investorId: string | null = request.body?.investorId;
 
@@ -19,7 +18,7 @@ export const getAllTransfersForUser = async (
   }
 
   try {
-    const foundUser= await User.findOneBy({
+    const foundUser = await User.findOneBy({
       id: investorId,
     });
 
@@ -32,10 +31,10 @@ export const getAllTransfersForUser = async (
     const foundAccounts = await Account.find({
       where: {
         user: foundUser,
-      }
-    })
+      },
+    });
 
-    const arrayOfAccountIds = foundAccounts.map(account => account.id)
+    const arrayOfAccountIds = foundAccounts.map((account) => account.id);
     const transfers = await Transfer.find({
       where: {
         sourceAccountId: In(arrayOfAccountIds),
