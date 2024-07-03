@@ -1,57 +1,6 @@
 import { Worker, Job } from "bullmq";
 import AppDataSource from "./data-source";
-import Transfer, { TransactionStatus } from "./entities/transfer";
-import { DateTime } from "luxon";
-import Account from "./entities/account";
-
-const processQueueItem = async (job: Job) => {
-  const queuedTransfer = await Transfer.findOneBy({
-    id: job.id,
-  });
-
-  if (!queuedTransfer) {
-    console.error(`Something has gone real wrong`);
-    return;
-  }
-
-  // set the start time on the queued transfer
-  queuedTransfer.status = TransactionStatus.IN_PROGRESS;
-  queuedTransfer.timeStarted = DateTime.now().toUTC().toJSDate();
-  const transferInProgress = await queuedTransfer.save();
-  const transferAmount = transferInProgress.transferAmount;
-  const sourceAccount = await Account.findOneByOrFail({
-    id: transferInProgress.sourceAccountId,
-  });
-  const destinationAccount = await Account.findOneByOrFail({
-    id: transferInProgress.destinationAccountId,
-  });
-  await withdrawFromSourceAccount(
-    transferAmount,
-    sourceAccount.externalAccountId,
-  );
-  await transferToDestinationAccount(
-    transferAmount,
-    destinationAccount.externalAccountId,
-  );
-  transferInProgress.status = TransactionStatus.COMPLETED;
-  transferInProgress.timeFinished = DateTime.now().toUTC().toJSDate();
-  await transferInProgress.save();
-  console.log(`all done`);
-};
-
-const withdrawFromSourceAccount = async (
-  transferAmount: number,
-  sourceAccountId: string,
-): Promise<boolean> => {
-  return true;
-};
-
-const transferToDestinationAccount = async (
-  transferAmount: number,
-  destinationAccountId: string,
-): Promise<boolean> => {
-  return true;
-};
+import { processQueueItem } from "./queue/processQueueItem";
 
 const startProcessingQueue = async () => {
   await AppDataSource.initialize();
@@ -59,24 +8,27 @@ const startProcessingQueue = async () => {
   const worker = new Worker(
     "transfer-queue",
     async (job: Job) => {
-      // Optionally report some progress
-      try {
-        processQueueItem(job);
-      } catch (err) {
-        // rut roh got a lot of cleanup to do
-      }
+      await processQueueItem(job);
     },
     {
       connection: {
         host: process.env.REDIS_HOST ?? "127.0.0.1",
         port: parseInt(process.env.REDIS_HOST ?? "6379"),
       },
+      // Only try the jobs once on both failure and completion
       removeOnComplete: { count: 0 },
+      removeOnFail: { count: 0 },
+      // dynamically be able to scale the queue up with an env variable
+      concurrency: parseInt(process.env.NUMBER_OF_QUEUE_WORKERS ?? "1"),
     },
   );
 
-  worker.on("completed", (job: Job, returnvalue: any) => {
-    console.log(`Completed`);
+  worker.on("completed", (job: Job, _: any) => {
+    console.log(`Completed transfer with id: ${job.id}`);
+  });
+
+  worker.on("error", (failedReason: Error) => {
+    console.error(`An error ocurred with the worked: ${failedReason}`);
   });
 };
 

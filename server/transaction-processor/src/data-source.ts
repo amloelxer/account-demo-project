@@ -2,7 +2,7 @@ import { DataSource } from "typeorm";
 
 import User from "./entities/user";
 import Transfer from "./entities/transfer";
-import Account from "./entities/account"
+import Account from "./entities/account";
 import FinancialEntity from "./entities/financialEntity";
 
 const AppDataSource = new DataSource({
