@@ -33,15 +33,16 @@ Once the node modules are installed you can run the docker file (located at the 
 docker compose up -d docker-compose.yml
 ```
 
-After the instances have been run, you'll need to sync the entities with the database. Generally running and creating transactions is best practice, but this is the fastest getting forward
+After the instances have been run, you'll need to sync the entities with the database. Generally running and creating migrations is best practice, but this is the fastest way to get up and running.
 
 ```
-// from the API directory 
+cd api/ // transfer into the API directory
 npm run build // so that we have javascript output
 npx typeorm schema:sync -d dist/data-source.js  
 ```
 
 From there you can run any of three projects with 
+
 ```
 npm run start
 ```
