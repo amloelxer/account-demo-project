@@ -26,9 +26,15 @@ export const getAllTransfersForUser = async (
   }
 
   try {
-    const foundUser = await User.findOneBy({
-      id: investorId,
-    });
+    const foundUser = await User.findOne({
+      where: {
+        id: investorId,
+      },
+      relations: {
+        financialEntity: true
+      }
+    },
+  );
 
     if (!foundUser) {
       return sendApiResponse({
@@ -40,7 +46,7 @@ export const getAllTransfersForUser = async (
 
     const foundAccounts = await Account.find({
       where: {
-        user: foundUser,
+        financialEntity: foundUser.financialEntity,
       },
     });
 

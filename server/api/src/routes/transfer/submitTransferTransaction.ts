@@ -16,8 +16,8 @@ export const submitTransferTransaction = async (
   // validate we have both users
   // const fundId: string | null = request?.body?.fundId;
   // const investorId: string | null = request.body?.investorId;
-  const accountSourceID = request?.body?.accountSourceID;
-  const accountDestinationID = request?.body?.accountSourceID;
+  const accountSourceID = request?.body?.accountSourceId;
+  const accountDestinationID = request?.body?.accountDestinationId;
   const transferAmount: number | null = request.body?.transferAmount;
 
   const responseObject = {
@@ -25,7 +25,6 @@ export const submitTransferTransaction = async (
     request,
   };
 
-  // validate whomever is calling this is authenticated
   if (!accountSourceID || !accountDestinationID || !transferAmount) {
     return sendApiResponse({
       ...responseObject,
@@ -47,7 +46,7 @@ export const submitTransferTransaction = async (
       return sendApiResponse({
         ...responseObject,
         responseCode: API_RESPONSE_CODE.NOT_FOUND,
-        message: "Could not locate Fund or Investor",
+        message: "Could not locate source account or destination account",
       });
     }
 
@@ -80,9 +79,11 @@ const submitTransferAndSubmitToQueue = async (
   // transfer. = input.sourceAccount;
   // transfer.destination = input.fund;
   transfer.transferAmount = input.transferAmount;
+  transfer.destinationAccountId = input.destinationAccount.id
+  transfer.sourceAccountId = input.sourceAccount.id
   const savedTransfer = await transfer.save();
   // send to queue
-  await transferQueue.add(savedTransfer.id, "stuff", {
+  await transferQueue.add(savedTransfer.id, {}, {
     removeOnComplete: true,
     jobId: savedTransfer.id,
   });

@@ -23,5 +23,15 @@ interface APIResponseInput {
 
 export const sendApiResponse = (input: APIResponseInput) => {
   const { response, request, payload, message, error, responseCode } = input;
-  response.status(responseCode).send({ message, error, payload });
+  if(error) {
+    const errorMetadata = {
+        error,
+        body: request.body,
+        headers: request.headers, 
+        url: request.url,
+    }
+    console.error(`An error occured`, errorMetadata)
+  }
+  
+  response.status(responseCode).send({ message, payload });
 };
