@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "bullmq": "^5.8.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "pg": "^8.12.0",
@@ -21,6 +22,7 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.9",
     "prettier": "3.3.2"
