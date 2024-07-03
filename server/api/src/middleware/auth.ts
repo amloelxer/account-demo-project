@@ -12,10 +12,10 @@ export const authMiddleware = async (
     return;
   } else {
     sendApiResponse({
-        request,
-        response,
-        responseCode: API_RESPONSE_CODE.UNAUTHORIZED
-    })
+      request,
+      response,
+      responseCode: API_RESPONSE_CODE.UNAUTHORIZED,
+    });
   }
 };
 
