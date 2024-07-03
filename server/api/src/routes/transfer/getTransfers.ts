@@ -14,15 +14,15 @@ export const getAllTransfersForUser = async (
 
   const responseObject = {
     response,
-    request, 
-  }
+    request,
+  };
 
   if (!investorId) {
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.BAD_REQUEST,
-      message: "Investor ID is invalid"
-    })
+      message: "Investor ID is invalid",
+    });
   }
 
   try {
@@ -32,10 +32,10 @@ export const getAllTransfersForUser = async (
 
     if (!foundUser) {
       return sendApiResponse({
-        ...responseObject, 
+        ...responseObject,
         responseCode: API_RESPONSE_CODE.NOT_FOUND,
-        message: "Could not locate Fund or Investor"
-      })
+        message: "Could not locate Fund or Investor",
+      });
     }
 
     const foundAccounts = await Account.find({
@@ -53,21 +53,21 @@ export const getAllTransfersForUser = async (
 
     if (transfers.length < 1) {
       return sendApiResponse({
-        ...responseObject, 
-        responseCode: API_RESPONSE_CODE.NOT_FOUND
-      })
+        ...responseObject,
+        responseCode: API_RESPONSE_CODE.NOT_FOUND,
+      });
     }
 
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.OK,
-      payload: transfers
-    })
+      payload: transfers,
+    });
   } catch (err) {
     return sendApiResponse({
-      ...responseObject, 
-      responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR
-    })
+      ...responseObject,
+      responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
@@ -79,8 +79,8 @@ export const getTransferForId = async (
 
   const responseObject = {
     response,
-    request, 
-  }
+    request,
+  };
 
   try {
     const foundTransfer = await Transfer.findOneBy({
@@ -89,22 +89,22 @@ export const getTransferForId = async (
 
     if (!foundTransfer) {
       return sendApiResponse({
-        ...responseObject, 
+        ...responseObject,
         responseCode: API_RESPONSE_CODE.NOT_FOUND,
-        message: `Could not locate transfer with transferID of ${transferId}`
-      })
+        message: `Could not locate transfer with transferID of ${transferId}`,
+      });
     }
 
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.OK,
-      payload: foundTransfer
-    })
+      payload: foundTransfer,
+    });
   } catch (err) {
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR,
-      error: err
-    })
+      error: err,
+    });
   }
 };

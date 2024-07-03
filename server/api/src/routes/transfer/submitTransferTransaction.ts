@@ -22,16 +22,16 @@ export const submitTransferTransaction = async (
 
   const responseObject = {
     response,
-    request, 
-  }
+    request,
+  };
 
   // validate whomever is calling this is authenticated
   if (!accountSourceID || !accountDestinationID || !transferAmount) {
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.BAD_REQUEST,
-      message: "Fund ID, partner ID, or transfer amount are invalid "
-    })
+      message: "Fund ID, partner ID, or transfer amount are invalid ",
+    });
   }
 
   try {
@@ -45,10 +45,10 @@ export const submitTransferTransaction = async (
 
     if (!sourceAccount || !destinationAccount) {
       return sendApiResponse({
-        ...responseObject, 
+        ...responseObject,
         responseCode: API_RESPONSE_CODE.NOT_FOUND,
-        message: "Could not locate Fund or Investor"
-      })
+        message: "Could not locate Fund or Investor",
+      });
     }
 
     // submit item to queue
@@ -58,18 +58,18 @@ export const submitTransferTransaction = async (
       transferAmount,
     });
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.ACCEPTED,
       payload: {
-        transferId
-      }
-    })
+        transferId,
+      },
+    });
   } catch (err) {
     return sendApiResponse({
-      ...responseObject, 
+      ...responseObject,
       responseCode: API_RESPONSE_CODE.INTERNAL_SERVER_ERROR,
       error: err,
-    })
+    });
   }
 };
 
