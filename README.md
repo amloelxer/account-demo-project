@@ -41,7 +41,7 @@ npm run build // so that we have javascript output
 npx typeorm schema:sync -d dist/data-source.js  
 ```
 
-From there you can run any of three projects with 
+From there you can run any of three projects by transferring into their directory and running
 
 ```
 npm run start
