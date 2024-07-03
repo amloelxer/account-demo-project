@@ -59,3 +59,12 @@ export const mockRestorePreviousFundState = async (
     }, 5000);
   });
 };
+
+/**
+ * Make sure any funds we have transferred or are in the process of transferring get put back
+ * Also reference the current transfer and make sure it's faileed
+ */
+export const mockCleanup = async (
+  ): Promise<void> => {
+   
+};

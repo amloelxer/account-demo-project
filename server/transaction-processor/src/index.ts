@@ -1,6 +1,21 @@
 import { Worker, Job } from "bullmq";
 import AppDataSource from "./data-source";
 import { processQueueItem } from "./queue/processQueueItem";
+import { mockCleanup } from "./utils/mockTransfers";
+
+/**
+ * if for some reason the process gets killed for any reason
+ * we need to make sure we cleanup and not in an intermediary state
+ */
+process.on('SIGTERM', () => {
+  mockCleanup()
+  process.exit(0)
+})
+
+process.on('SIGINT', () => {
+  mockCleanup()
+  process.exit(0)
+})
 
 const startProcessingQueue = async () => {
   await AppDataSource.initialize();
@@ -33,3 +48,4 @@ const startProcessingQueue = async () => {
 };
 
 startProcessingQueue();
+
