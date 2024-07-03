@@ -46,7 +46,7 @@ class Transfer extends BaseEntity {
   })
   status: TransactionStatus;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   failureReason: string;
 
   @CreateDateColumn()

@@ -13,9 +13,6 @@ export const submitTransferTransaction = async (
   request: Request,
   response: Response,
 ) => {
-  // validate we have both users
-  // const fundId: string | null = request?.body?.fundId;
-  // const investorId: string | null = request.body?.investorId;
   const accountSourceID = request?.body?.accountSourceId;
   const accountDestinationID = request?.body?.accountDestinationId;
   const transferAmount: number | null = request.body?.transferAmount;
