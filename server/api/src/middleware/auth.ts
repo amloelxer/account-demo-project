@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { sendApiResponse, API_RESPONSE_CODE } from "../utils/apiResponse";
 
 export const authMiddleware = async (
   request: Request,
@@ -9,9 +10,13 @@ export const authMiddleware = async (
   if (canContinue) {
     next();
     return;
+  } else {
+    sendApiResponse({
+        request,
+        response,
+        responseCode: API_RESPONSE_CODE.UNAUTHORIZED
+    })
   }
-
-  // send back 404 here
 };
 
 const isValidRequest = (request: Request): Promise<true> => {

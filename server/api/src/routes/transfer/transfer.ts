@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
-import { submitTransferTransaction } from "./submitTransferTransaction";
-import { getAllTransfersForUser, getTransferForId } from "./getTransfers";
+import { submitTransferTransaction } from "../../controllers/transfers/submitTransferTransaction";
+import { getAllTransfersForUser, getTransferForId } from "../../controllers/transfers/getTransfers";
 import { authMiddleware } from "../../middleware/auth";
 
 export const transferRouter = Router();
