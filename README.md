@@ -14,7 +14,7 @@ Typescript -> v5.4.5
 Docker ->  v26.1.1
 ```
 
-Once you have the necessary versions installed. You'll need to install the node modules for all the projects
+Once you have the necessary versions installed. You'll need to clone the repo and install the node modules for all the projects
 
 ```
 cd server/api/
